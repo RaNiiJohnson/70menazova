@@ -69,7 +69,10 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-background border-t border-border/50 mt-20">
+    <footer
+      className="bg-background border-t border-border/50 mt-20"
+      role="contentinfo"
+    >
       <div className="container mx-auto px-4 py-12">
         <motion.div
           variants={containerVariants}
@@ -81,7 +84,10 @@ export function Footer() {
           {/* Collective Info */}
           <motion.div variants={itemVariants} className="lg:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-md flex items-center justify-center">
+              <div
+                className="w-10 h-10 bg-primary rounded-md flex items-center justify-center"
+                aria-hidden="true"
+              >
                 <span className="text-primary-foreground font-bold">
                   {collectiveData.name
                     .split(" ")
@@ -89,9 +95,9 @@ export function Footer() {
                     .join("")}
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-foreground">
+              <h2 className="text-xl font-bold text-foreground">
                 {collectiveData.name}
-              </h3>
+              </h2>
             </div>
             <p className="text-muted-foreground mb-4 max-w-md">
               {collectiveData.tagline}
@@ -103,27 +109,35 @@ export function Footer() {
 
           {/* Contact Info */}
           <motion.div variants={itemVariants}>
-            <h4 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Contact
-            </h4>
-            <div className="space-y-3">
+            </h3>
+            <address className="space-y-3 not-italic">
               <motion.a
                 href={`mailto:${collectiveData.contact.email}`}
-                className="flex items-center space-x-3 text-muted-foreground hover:text-foreground transition-colors group"
+                className="flex items-center space-x-3 text-muted-foreground hover:text-foreground transition-colors group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-md p-1"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                aria-label={`Envoyer un email à ${collectiveData.contact.email}`}
               >
-                <Mail className="w-4 h-4 group-hover:text-primary transition-colors" />
+                <Mail
+                  className="w-4 h-4 group-hover:text-primary transition-colors"
+                  aria-hidden="true"
+                />
                 <span className="text-sm">{collectiveData.contact.email}</span>
               </motion.a>
 
               <motion.a
                 href={`tel:${collectiveData.contact.phone}`}
-                className="flex items-center space-x-3 text-muted-foreground hover:text-foreground transition-colors group"
+                className="flex items-center space-x-3 text-muted-foreground hover:text-foreground transition-colors group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-md p-1"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                aria-label={`Appeler le ${collectiveData.contact.phone}`}
               >
-                <Phone className="w-4 h-4 group-hover:text-primary transition-colors" />
+                <Phone
+                  className="w-4 h-4 group-hover:text-primary transition-colors"
+                  aria-hidden="true"
+                />
                 <span className="text-sm">{collectiveData.contact.phone}</span>
               </motion.a>
 
@@ -132,20 +146,23 @@ export function Footer() {
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                <MapPin className="w-4 h-4" />
+                <MapPin className="w-4 h-4" aria-hidden="true" />
                 <span className="text-sm">
                   {collectiveData.contact.location}
                 </span>
               </motion.div>
-            </div>
+            </address>
           </motion.div>
 
           {/* Social Links */}
           <motion.div variants={itemVariants}>
-            <h4 className="text-lg font-semibold text-foreground mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-4">
               Suivez-nous
-            </h4>
-            <div className="grid grid-cols-3 gap-3">
+            </h3>
+            <nav
+              className="grid grid-cols-3 gap-3"
+              aria-label="Liens vers les réseaux sociaux"
+            >
               {Object.entries(collectiveData.socialLinks).map(
                 ([platform, url]) => {
                   if (!url) return null;
@@ -162,22 +179,26 @@ export function Footer() {
                       rel="noopener noreferrer"
                       variants={socialIconVariants}
                       whileHover="hover"
-                      className="flex items-center justify-center w-12 h-12 bg-secondary hover:bg-primary rounded-lg transition-colors group"
+                      className="flex items-center justify-center w-12 h-12 bg-secondary hover:bg-primary rounded-lg transition-colors group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+                      aria-label={`Suivre ${collectiveData.name} sur ${platform}`}
                     >
-                      <IconComponent className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground transition-colors" />
-                      <span className="sr-only">{platform}</span>
+                      <IconComponent
+                        className="w-5 h-5 text-muted-foreground group-hover:text-primary-foreground transition-colors"
+                        aria-hidden="true"
+                      />
                     </motion.a>
                   );
                 }
               )}
-            </div>
+            </nav>
 
             {/* External Link Indicator */}
             <motion.p
               variants={itemVariants}
               className="text-xs text-muted-foreground mt-3 flex items-center space-x-1"
+              role="note"
             >
-              <ExternalLink className="w-3 h-3" />
+              <ExternalLink className="w-3 h-3" aria-hidden="true" />
               <span>Liens externes</span>
             </motion.p>
           </motion.div>
@@ -199,14 +220,16 @@ export function Footer() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="hover:text-foreground transition-colors"
+              className="hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-md p-1"
+              aria-label="Consulter la politique de confidentialité"
             >
               Politique de confidentialité
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="hover:text-foreground transition-colors"
+              className="hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-md p-1"
+              aria-label="Consulter les conditions d'utilisation"
             >
               Conditions d'utilisation
             </motion.button>

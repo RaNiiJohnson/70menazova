@@ -86,8 +86,13 @@ export function Navigation({ activeSection }: NavigationProps) {
           ? "bg-background/95 backdrop-blur-md border-b border-border/50"
           : "bg-transparent"
       }`}
+      role="banner"
     >
-      <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <nav
+        className="container mx-auto px-4 h-16 flex items-center justify-between"
+        role="navigation"
+        aria-label="Navigation principale"
+      >
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -95,17 +100,26 @@ export function Navigation({ activeSection }: NavigationProps) {
           transition={{ delay: 0.1 }}
           className="flex items-center space-x-2"
         >
-          <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">
-              {collectiveData.name
-                .split(" ")
-                .map((word) => word[0])
-                .join("")}
+          <button
+            onClick={() => scrollToSection("hero")}
+            className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded-md p-1"
+            aria-label={`Retour à l'accueil - ${collectiveData.name}`}
+          >
+            <div
+              className="w-8 h-8 bg-primary rounded-md flex items-center justify-center"
+              aria-hidden="true"
+            >
+              <span className="text-primary-foreground font-bold text-sm">
+                {collectiveData.name
+                  .split(" ")
+                  .map((word) => word[0])
+                  .join("")}
+              </span>
+            </div>
+            <span className="font-bold text-lg text-foreground hidden sm:block">
+              {collectiveData.name}
             </span>
-          </div>
-          <span className="font-bold text-lg text-foreground hidden sm:block">
-            {collectiveData.name}
-          </span>
+          </button>
         </motion.div>
 
         {/* Desktop Navigation */}
@@ -114,6 +128,8 @@ export function Navigation({ activeSection }: NavigationProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="hidden md:flex items-center space-x-1"
+          role="menubar"
+          aria-label="Menu de navigation principal"
         >
           {navigationItems.map((item, index) => (
             <motion.button
@@ -122,11 +138,14 @@ export function Navigation({ activeSection }: NavigationProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + index * 0.1 }}
               onClick={() => scrollToSection(item.id)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 relative ${
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 relative focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background ${
                 currentSection === item.id
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
               }`}
+              role="menuitem"
+              aria-current={currentSection === item.id ? "page" : undefined}
+              aria-label={`Aller à la section ${item.label}`}
             >
               {item.label}
               {currentSection === item.id && (
@@ -134,6 +153,7 @@ export function Navigation({ activeSection }: NavigationProps) {
                   layoutId="activeSection"
                   className="absolute inset-0 bg-primary/10 rounded-md -z-10"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  aria-hidden="true"
                 />
               )}
             </motion.button>
@@ -164,11 +184,15 @@ export function Navigation({ activeSection }: NavigationProps) {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <SheetHeader>
-                <SheetTitle className="text-left">
+                <SheetTitle className="text-left" id="mobile-menu-title">
                   {collectiveData.name}
                 </SheetTitle>
               </SheetHeader>
-              <div className="flex flex-col space-y-4 mt-8">
+              <nav
+                className="flex flex-col space-y-4 mt-8"
+                role="navigation"
+                aria-labelledby="mobile-menu-title"
+              >
                 {navigationItems.map((item, index) => (
                   <motion.button
                     key={item.id}
@@ -176,17 +200,20 @@ export function Navigation({ activeSection }: NavigationProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(item.id)}
-                    className={`text-left px-4 py-4 rounded-md text-lg font-medium transition-all duration-200 min-h-[56px] touch-manipulation w-full ${
+                    className={`text-left px-4 py-4 rounded-md text-lg font-medium transition-all duration-200 min-h-[56px] touch-manipulation w-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background ${
                       currentSection === item.id
                         ? "text-primary bg-primary/10 border-l-4 border-primary"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent/80"
                     }`}
                     aria-label={`Aller à la section ${item.label}`}
+                    aria-current={
+                      currentSection === item.id ? "page" : undefined
+                    }
                   >
                     {item.label}
                   </motion.button>
                 ))}
-              </div>
+              </nav>
             </SheetContent>
           </Sheet>
         </div>

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Photo } from "@/data/collective";
 import { Card, CardContent } from "@/components/ui/card";
 import { Expand, Loader2 } from "lucide-react";
@@ -35,6 +35,13 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
     <motion.div
       initial={{
@@ -58,20 +65,37 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
       whileTap={isMobile ? { scale: 0.95 } : {}}
       className="group cursor-pointer touch-manipulation"
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`Ouvrir l'image: ${photo.alt}${
+        photo.caption ? ` - ${photo.caption}` : ""
+      }`}
     >
       <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300">
         <CardContent className="p-0">
           <div className="relative aspect-square overflow-hidden">
             {/* Loading State */}
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-muted"
+                role="status"
+                aria-label="Chargement de l'image"
+              >
+                <Loader2
+                  className="w-6 h-6 animate-spin text-muted-foreground"
+                  aria-hidden="true"
+                />
               </div>
             )}
 
             {/* Error State */}
             {hasError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
+              <div
+                className="absolute inset-0 flex items-center justify-center bg-muted"
+                role="alert"
+                aria-label="Erreur de chargement de l'image"
+              >
                 <div className="text-center text-muted-foreground">
                   <div className="text-sm">Image non disponible</div>
                 </div>
@@ -107,6 +131,7 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
                     className="absolute inset-0 bg-black/60 flex items-center justify-center"
+                    aria-hidden="true"
                   >
                     <motion.div
                       initial={{ scale: 0 }}
@@ -114,15 +139,21 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
                       transition={{ delay: shouldReduceMotion ? 0 : 0.1 }}
                       className="bg-white/20 backdrop-blur-sm rounded-full p-3"
                     >
-                      <Expand className="w-6 h-6 text-white" />
+                      <Expand
+                        className="w-6 h-6 text-white"
+                        aria-hidden="true"
+                      />
                     </motion.div>
                   </motion.div>
                 )}
 
                 {/* Mobile tap indicator */}
                 {isMobile && (
-                  <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full p-2">
-                    <Expand className="w-4 h-4 text-white" />
+                  <div
+                    className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full p-2"
+                    aria-hidden="true"
+                  >
+                    <Expand className="w-4 h-4 text-white" aria-hidden="true" />
                   </div>
                 )}
 

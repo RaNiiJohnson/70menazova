@@ -9,7 +9,7 @@ export default function Members() {
     <section id="members" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <motion.header
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -26,7 +26,7 @@ export default function Members() {
             Découvrez les talents qui composent Urban Roots Collective, chacun
             apportant sa propre vision et son style unique au collectif.
           </p>
-        </motion.div>
+        </motion.header>
 
         {/* Members Grid */}
         <motion.div

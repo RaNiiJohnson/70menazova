@@ -22,9 +22,12 @@ export default function Hero({ onScrollToSection }: HeroProps) {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-secondary/20">
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-secondary/20"
+      aria-label="Section d'accueil du collectif"
+    >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10" aria-hidden="true">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_48%,rgba(255,255,255,0.05)_49%,rgba(255,255,255,0.05)_51%,transparent_52%)] bg-[length:20px_20px]" />
       </div>
@@ -73,7 +76,8 @@ export default function Hero({ onScrollToSection }: HeroProps) {
           <Button
             onClick={handleScrollToMembers}
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-all duration-300 transform hover:scale-105 active:scale-95 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-all duration-300 transform hover:scale-105 active:scale-95 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+            aria-label="Découvrir les membres du collectif"
           >
             Découvrir le Collectif
           </Button>
@@ -87,7 +91,8 @@ export default function Hero({ onScrollToSection }: HeroProps) {
                 videosSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto"
+            className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+            aria-label="Voir les clips vidéo du collectif"
           >
             Voir nos Clips
           </Button>
@@ -100,11 +105,14 @@ export default function Hero({ onScrollToSection }: HeroProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        aria-label="Indicateur de défilement"
+        role="img"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center"
+          aria-hidden="true"
         >
           <motion.div
             animate={{ y: [0, 12, 0] }}

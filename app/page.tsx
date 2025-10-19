@@ -96,6 +96,13 @@ export default function HomePage() {
         exit="exit"
         className="min-h-screen bg-background"
       >
+        {/* Skip Link for Accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Aller au contenu principal
+        </a>
         {/* Scroll Progress Indicator */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-primary/10 z-50"
@@ -113,7 +120,7 @@ export default function HomePage() {
         <Navigation activeSection={activeSection} />
 
         {/* Main Content */}
-        <main className="relative">
+        <main className="relative" role="main" id="main-content">
           {/* Hero Section */}
           <motion.section
             id="hero"
@@ -121,6 +128,7 @@ export default function HomePage() {
             initial="initial"
             animate={isLoaded ? "animate" : "initial"}
             className="relative"
+            aria-label="Section d'accueil"
           >
             <Hero />
           </motion.section>
@@ -139,6 +147,7 @@ export default function HomePage() {
             whileInView="animate"
             viewport={{ once: true, margin: "-100px" }}
             className="relative"
+            aria-label="Section des membres du collectif"
           >
             <Members />
           </motion.section>
@@ -157,6 +166,7 @@ export default function HomePage() {
             whileInView="animate"
             viewport={{ once: true, margin: "-100px" }}
             className="relative"
+            aria-label="Section des vidéos et clips"
           >
             <Videos />
           </motion.section>
@@ -175,6 +185,7 @@ export default function HomePage() {
             whileInView="animate"
             viewport={{ once: true, margin: "-100px" }}
             className="relative"
+            aria-label="Section galerie photos"
           >
             <Gallery />
           </motion.section>
@@ -193,6 +204,7 @@ export default function HomePage() {
             whileInView="animate"
             viewport={{ once: true, margin: "-100px" }}
             className="relative"
+            aria-label="Section contact et réseaux sociaux"
           >
             <Contact />
           </motion.section>

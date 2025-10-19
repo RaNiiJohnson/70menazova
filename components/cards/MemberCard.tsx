@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Instagram, Twitter, Music, Youtube } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useReducedMotion, useIsMobile } from "@/lib/hooks";
 
 interface MemberCardProps {
@@ -23,16 +23,33 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
   const getSocialIcon = (platform: string) => {
     switch (platform) {
       case "instagram":
-        return <Instagram className="w-4 h-4" />;
+        return <Instagram className="w-4 h-4" aria-hidden="true" />;
       case "twitter":
-        return <Twitter className="w-4 h-4" />;
+        return <Twitter className="w-4 h-4" aria-hidden="true" />;
       case "spotify":
       case "soundcloud":
-        return <Music className="w-4 h-4" />;
+        return <Music className="w-4 h-4" aria-hidden="true" />;
       case "youtube":
-        return <Youtube className="w-4 h-4" />;
+        return <Youtube className="w-4 h-4" aria-hidden="true" />;
       default:
         return null;
+    }
+  };
+
+  const getSocialPlatformName = (platform: string) => {
+    switch (platform) {
+      case "instagram":
+        return "Instagram";
+      case "twitter":
+        return "Twitter";
+      case "spotify":
+        return "Spotify";
+      case "soundcloud":
+        return "SoundCloud";
+      case "youtube":
+        return "YouTube";
+      default:
+        return platform;
     }
   };
 
@@ -41,7 +58,7 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
     : [];
 
   return (
-    <motion.div
+    <motion.article
       initial={{ opacity: 0, y: shouldReduceMotion ? 0 : isMobile ? 20 : 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -63,6 +80,8 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
       onTouchEnd={() =>
         isMobile && setTimeout(() => setShowSocials(false), 3000)
       }
+      role="article"
+      aria-label={`Profil de ${member.name}, ${member.role}`}
     >
       <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300 h-full">
         <CardContent className="p-0">
@@ -75,7 +94,7 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
             >
               <Image
                 src={member.image}
-                alt={member.name}
+                alt={`Photo de profil de ${member.name}`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -91,6 +110,8 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
               whileHover={!isMobile ? { opacity: 1 } : {}}
               transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
               className="absolute inset-0 bg-black/60 flex items-center justify-center group-hover:opacity-100"
+              role="group"
+              aria-label={`Liens sociaux de ${member.name}`}
             >
               <div className="flex gap-2">
                 {socialLinks.map(([platform, url]) => (
@@ -105,8 +126,12 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
                       size="sm"
                       variant="secondary"
                       className="w-12 h-12 p-0 bg-white/20 hover:bg-white/30 backdrop-blur-sm touch-manipulation min-h-[44px] min-w-[44px]"
-                      onClick={() => window.open(url, "_blank")}
-                      aria-label={`Voir ${member.name} sur ${platform}`}
+                      onClick={() =>
+                        window.open(url, "_blank", "noopener,noreferrer")
+                      }
+                      aria-label={`Voir ${
+                        member.name
+                      } sur ${getSocialPlatformName(platform)}`}
                     >
                       {getSocialIcon(platform)}
                     </Button>
@@ -117,15 +142,23 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
 
             {/* Mobile social links - always visible on mobile */}
             {isMobile && socialLinks.length > 0 && (
-              <div className="absolute bottom-2 right-2 flex gap-1">
+              <div
+                className="absolute bottom-2 right-2 flex gap-1"
+                role="group"
+                aria-label={`Liens sociaux de ${member.name}`}
+              >
                 {socialLinks.slice(0, 2).map(([platform, url]) => (
                   <Button
                     key={platform}
                     size="sm"
                     variant="secondary"
-                    className="w-8 h-8 p-0 bg-black/60 hover:bg-black/80 backdrop-blur-sm"
-                    onClick={() => window.open(url, "_blank")}
-                    aria-label={`Voir ${member.name} sur ${platform}`}
+                    className="w-8 h-8 p-0 bg-black/60 hover:bg-black/80 backdrop-blur-sm min-h-[44px] min-w-[44px]"
+                    onClick={() =>
+                      window.open(url, "_blank", "noopener,noreferrer")
+                    }
+                    aria-label={`Voir ${
+                      member.name
+                    } sur ${getSocialPlatformName(platform)}`}
                   >
                     {getSocialIcon(platform)}
                   </Button>
@@ -140,17 +173,25 @@ export function MemberCard({ member, index = 0 }: MemberCardProps) {
               <h3 className="font-semibold text-lg leading-tight text-foreground group-hover:text-primary transition-colors duration-200">
                 {member.name}
               </h3>
-              <Badge variant="outline" className="text-xs">
+              <Badge
+                variant="outline"
+                className="text-xs"
+                role="text"
+                aria-label={`Rôle: ${member.role}`}
+              >
                 {member.role}
               </Badge>
             </div>
 
-            <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4">
+            <p
+              className="text-muted-foreground text-sm leading-relaxed line-clamp-4"
+              aria-label={`Biographie de ${member.name}`}
+            >
               {member.bio}
             </p>
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </motion.article>
   );
 }

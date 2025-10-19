@@ -19,16 +19,16 @@ export default function Contact() {
   const getSocialIcon = (platform: string) => {
     switch (platform) {
       case "instagram":
-        return <Instagram className="w-5 h-5" />;
+        return <Instagram className="w-5 h-5" aria-hidden="true" />;
       case "youtube":
-        return <Youtube className="w-5 h-5" />;
+        return <Youtube className="w-5 h-5" aria-hidden="true" />;
       case "facebook":
-        return <Facebook className="w-5 h-5" />;
+        return <Facebook className="w-5 h-5" aria-hidden="true" />;
       case "spotify":
       case "soundcloud":
-        return <Music className="w-5 h-5" />;
+        return <Music className="w-5 h-5" aria-hidden="true" />;
       default:
-        return <ExternalLink className="w-5 h-5" />;
+        return <ExternalLink className="w-5 h-5" aria-hidden="true" />;
     }
   };
 

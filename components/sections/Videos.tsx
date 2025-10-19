@@ -11,7 +11,7 @@ export default function Videos() {
     <section id="videos" className="py-16 sm:py-24 bg-secondary/10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <motion.header
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -39,16 +39,21 @@ export default function Videos() {
             <Button
               variant="outline"
               onClick={() =>
-                window.open(collectiveData.socialLinks.youtube, "_blank")
+                window.open(
+                  collectiveData.socialLinks.youtube,
+                  "_blank",
+                  "noopener,noreferrer"
+                )
               }
-              className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 min-h-[44px] touch-manipulation"
+              className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+              aria-label="Voir toutes nos vidéos sur YouTube (ouvre dans un nouvel onglet)"
             >
-              <Youtube className="w-4 h-4 mr-2" />
+              <Youtube className="w-4 h-4 mr-2" aria-hidden="true" />
               Voir toutes nos vidéos
-              <ExternalLink className="w-4 h-4 ml-2" />
+              <ExternalLink className="w-4 h-4 ml-2" aria-hidden="true" />
             </Button>
           </motion.div>
-        </motion.div>
+        </motion.header>
 
         {/* Videos Grid */}
         <motion.div
@@ -94,21 +99,31 @@ export default function Videos() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button
                 onClick={() =>
-                  window.open(collectiveData.socialLinks.youtube, "_blank")
+                  window.open(
+                    collectiveData.socialLinks.youtube,
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
                 }
-                className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all duration-300 min-h-[44px] touch-manipulation"
+                className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all duration-300 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-background"
+                aria-label="S'abonner à notre chaîne YouTube (ouvre dans un nouvel onglet)"
               >
-                <Youtube className="w-4 h-4 mr-2" />
+                <Youtube className="w-4 h-4 mr-2" aria-hidden="true" />
                 S'abonner sur YouTube
               </Button>
               <Button
                 variant="outline"
                 onClick={() =>
-                  window.open(collectiveData.socialLinks.spotify, "_blank")
+                  window.open(
+                    collectiveData.socialLinks.spotify,
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
                 }
-                className="border-green-500/30 text-green-400 hover:bg-green-500/10 active:bg-green-500/20 min-h-[44px] touch-manipulation"
+                className="border-green-500/30 text-green-400 hover:bg-green-500/10 active:bg-green-500/20 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-background"
+                aria-label="Écouter notre musique sur Spotify (ouvre dans un nouvel onglet)"
               >
-                <ExternalLink className="w-4 h-4 mr-2" />
+                <ExternalLink className="w-4 h-4 mr-2" aria-hidden="true" />
                 Écouter sur Spotify
               </Button>
             </div>

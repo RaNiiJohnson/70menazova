@@ -34,16 +34,25 @@ export default function Gallery() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowLeft") handlePrevious();
-    if (e.key === "ArrowRight") handleNext();
-    if (e.key === "Escape") setSelectedPhoto(null);
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      handlePrevious();
+    }
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      handleNext();
+    }
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setSelectedPhoto(null);
+    }
   };
 
   return (
     <section id="gallery" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
+        <motion.header
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -60,7 +69,7 @@ export default function Gallery() {
             Découvrez l'univers visuel d'Urban Roots Collective à travers nos
             moments marquants, sessions studio et performances live.
           </p>
-        </motion.div>
+        </motion.header>
 
         {/* Photos Grid */}
         <motion.div
@@ -114,6 +123,9 @@ export default function Gallery() {
           className="max-w-[95vw] max-h-[95vh] w-auto h-auto p-0 bg-black/95 border-0"
           showCloseButton={false}
           onKeyDown={handleKeyDown}
+          aria-label={`Lightbox - ${selectedPhoto?.alt || "Image agrandie"}`}
+          role="dialog"
+          aria-modal="true"
         >
           {selectedPhoto && (
             <div className="relative flex items-center justify-center min-h-[50vh]">
@@ -122,9 +134,10 @@ export default function Gallery() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white border-0"
+                  className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white border-0 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+                  aria-label="Fermer la lightbox"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4" aria-hidden="true" />
                 </Button>
               </DialogClose>
 
@@ -133,20 +146,20 @@ export default function Gallery() {
                 variant="ghost"
                 size="sm"
                 onClick={handlePrevious}
-                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                 aria-label="Photo précédente"
               >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-6 h-6" aria-hidden="true" />
               </Button>
 
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleNext}
-                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
                 aria-label="Photo suivante"
               >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-6 h-6" aria-hidden="true" />
               </Button>
 
               {/* Image */}
@@ -158,6 +171,7 @@ export default function Gallery() {
                   height={800}
                   className="max-w-full max-h-full object-contain"
                   priority
+                  role="img"
                 />
               </div>
 
