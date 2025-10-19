@@ -73,7 +73,7 @@ export default function Hero({ onScrollToSection }: HeroProps) {
           <Button
             onClick={handleScrollToMembers}
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 px-8 py-3 text-base font-medium"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-all duration-300 transform hover:scale-105 active:scale-95 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto"
           >
             Découvrir le Collectif
           </Button>
@@ -87,7 +87,7 @@ export default function Hero({ onScrollToSection }: HeroProps) {
                 videosSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="border-primary/30 text-primary hover:bg-primary/10 transition-all duration-300 px-8 py-3 text-base font-medium"
+            className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 px-8 py-4 text-base font-medium min-h-[48px] touch-manipulation w-full sm:w-auto"
           >
             Voir nos Clips
           </Button>

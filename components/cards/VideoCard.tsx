@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { Video } from "@/data/collective";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState, useEffect } from "react";
+import { useReducedMotion, useIsMobile } from "@/lib/hooks";
 
 interface VideoCardProps {
   video: Video;
@@ -11,6 +13,9 @@ interface VideoCardProps {
 }
 
 export function VideoCard({ video, index = 0 }: VideoCardProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("fr-FR", {
       year: "numeric",
@@ -21,30 +26,39 @@ export function VideoCard({ video, index = 0 }: VideoCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : isMobile ? 20 : 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.6,
-        delay: index * 0.1,
+        duration: shouldReduceMotion ? 0.1 : isMobile ? 0.4 : 0.6,
+        delay: shouldReduceMotion ? 0 : isMobile ? index * 0.05 : index * 0.1,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2 },
-      }}
-      className="group"
+      whileHover={
+        !isMobile && !shouldReduceMotion
+          ? {
+              scale: 1.02,
+              transition: { duration: 0.2 },
+            }
+          : {}
+      }
+      whileTap={isMobile ? { scale: 0.98 } : {}}
+      className="group touch-manipulation"
     >
       <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300">
         <CardContent className="p-0">
           {/* Video Container */}
           <div className="relative aspect-video overflow-hidden">
             <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              whileHover={
+                !isMobile && !shouldReduceMotion ? { scale: 1.05 } : {}
+              }
+              transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
               className="w-full h-full"
             >
               <iframe
-                src={`https://www.youtube.com/embed/${video.youtubeId}?rel=0&modestbranding=1`}
+                src={`https://www.youtube.com/embed/${
+                  video.youtubeId
+                }?rel=0&modestbranding=1${isMobile ? "&playsinline=1" : ""}`}
                 title={video.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

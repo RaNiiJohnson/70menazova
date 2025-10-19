@@ -41,7 +41,7 @@ export default function Videos() {
               onClick={() =>
                 window.open(collectiveData.socialLinks.youtube, "_blank")
               }
-              className="border-primary/30 text-primary hover:bg-primary/10 transition-all duration-300"
+              className="border-primary/30 text-primary hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 min-h-[44px] touch-manipulation"
             >
               <Youtube className="w-4 h-4 mr-2" />
               Voir toutes nos vidéos
@@ -56,7 +56,7 @@ export default function Videos() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
         >
           {collectiveData.videos.map((video, index) => (
             <motion.div
@@ -96,7 +96,7 @@ export default function Videos() {
                 onClick={() =>
                   window.open(collectiveData.socialLinks.youtube, "_blank")
                 }
-                className="bg-red-600 hover:bg-red-700 text-white transition-all duration-300"
+                className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all duration-300 min-h-[44px] touch-manipulation"
               >
                 <Youtube className="w-4 h-4 mr-2" />
                 S'abonner sur YouTube
@@ -106,7 +106,7 @@ export default function Videos() {
                 onClick={() =>
                   window.open(collectiveData.socialLinks.spotify, "_blank")
                 }
-                className="border-green-500/30 text-green-400 hover:bg-green-500/10"
+                className="border-green-500/30 text-green-400 hover:bg-green-500/10 active:bg-green-500/20 min-h-[44px] touch-manipulation"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Écouter sur Spotify

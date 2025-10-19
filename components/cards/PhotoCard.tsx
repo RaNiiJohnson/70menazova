@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Photo } from "@/data/collective";
 import { Card, CardContent } from "@/components/ui/card";
 import { Expand, Loader2 } from "lucide-react";
+import { useReducedMotion, useIsMobile } from "@/lib/hooks";
 
 interface PhotoCardProps {
   photo: Photo;
@@ -16,6 +17,8 @@ interface PhotoCardProps {
 export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -34,18 +37,26 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{
+        opacity: 0,
+        scale: shouldReduceMotion ? 1 : isMobile ? 0.95 : 0.8,
+      }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
-        duration: 0.5,
-        delay: index * 0.1,
+        duration: shouldReduceMotion ? 0.1 : isMobile ? 0.3 : 0.5,
+        delay: shouldReduceMotion ? 0 : isMobile ? index * 0.02 : index * 0.1,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2 },
-      }}
-      className="group cursor-pointer"
+      whileHover={
+        !isMobile && !shouldReduceMotion
+          ? {
+              scale: 1.02,
+              transition: { duration: 0.2 },
+            }
+          : {}
+      }
+      whileTap={isMobile ? { scale: 0.95 } : {}}
+      className="group cursor-pointer touch-manipulation"
       onClick={handleClick}
     >
       <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/20 transition-all duration-300">
@@ -71,8 +82,10 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
             {!hasError && (
               <>
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.4 }}
+                  whileHover={
+                    !isMobile && !shouldReduceMotion ? { scale: 1.1 } : {}
+                  }
+                  transition={{ duration: shouldReduceMotion ? 0 : 0.4 }}
                   className="w-full h-full"
                 >
                   <Image
@@ -80,28 +93,38 @@ export function PhotoCard({ photo, onClick, index = 0 }: PhotoCardProps) {
                     alt={photo.alt}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1200px) 25vw, 20vw"
                     onLoad={handleImageLoad}
                     onError={handleImageError}
+                    priority={index < 6} // Prioritize first 6 images
                   />
                 </motion.div>
 
-                {/* Hover Overlay */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0 bg-black/60 flex items-center justify-center"
-                >
+                {/* Hover Overlay - Desktop only */}
+                {!isMobile && (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    whileHover={{ scale: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="bg-white/20 backdrop-blur-sm rounded-full p-3"
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
+                    className="absolute inset-0 bg-black/60 flex items-center justify-center"
                   >
-                    <Expand className="w-6 h-6 text-white" />
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileHover={{ scale: 1 }}
+                      transition={{ delay: shouldReduceMotion ? 0 : 0.1 }}
+                      className="bg-white/20 backdrop-blur-sm rounded-full p-3"
+                    >
+                      <Expand className="w-6 h-6 text-white" />
+                    </motion.div>
                   </motion.div>
-                </motion.div>
+                )}
+
+                {/* Mobile tap indicator */}
+                {isMobile && (
+                  <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm rounded-full p-2">
+                    <Expand className="w-4 h-4 text-white" />
+                  </div>
+                )}
 
                 {/* Caption Overlay */}
                 {photo.caption && (

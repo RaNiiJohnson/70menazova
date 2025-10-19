@@ -68,7 +68,7 @@ export default function Gallery() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4 lg:gap-6"
         >
           {collectiveData.photos.map((photo, index) => (
             <motion.div
@@ -133,7 +133,8 @@ export default function Gallery() {
                 variant="ghost"
                 size="sm"
                 onClick={handlePrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0"
+                className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation"
+                aria-label="Photo précédente"
               >
                 <ChevronLeft className="w-6 h-6" />
               </Button>
@@ -142,7 +143,8 @@ export default function Gallery() {
                 variant="ghost"
                 size="sm"
                 onClick={handleNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0"
+                className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white border-0 min-h-[44px] min-w-[44px] touch-manipulation"
+                aria-label="Photo suivante"
               >
                 <ChevronRight className="w-6 h-6" />
               </Button>

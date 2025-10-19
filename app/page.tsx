@@ -2,29 +2,32 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
+import { useReducedMotion, useIsMobile } from "@/lib/hooks";
 import { Navigation, Footer } from "@/components/layout";
 import { Hero, Members, Videos, Gallery, Contact } from "@/components/sections";
 
 export default function HomePage() {
   const [activeSection, setActiveSection] = useState("hero");
   const [isLoaded, setIsLoaded] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
-  // Scroll progress tracking
+  // Scroll progress tracking with mobile optimization
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: shouldReduceMotion ? 300 : 100,
+    damping: shouldReduceMotion ? 40 : 30,
     restDelta: 0.001,
   });
 
   useEffect(() => {
     setIsLoaded(true);
 
-    // Intersection Observer for section detection
+    // Intersection Observer for section detection with mobile optimization
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px -20% 0px",
-      threshold: 0.3,
+      rootMargin: isMobile ? "-10% 0px -10% 0px" : "-20% 0px -20% 0px",
+      threshold: isMobile ? 0.2 : 0.3,
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -52,32 +55,32 @@ export default function HomePage() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [isMobile]);
 
   const pageVariants = {
     initial: { opacity: 0 },
     animate: {
       opacity: 1,
       transition: {
-        duration: 0.6,
+        duration: shouldReduceMotion ? 0.1 : isMobile ? 0.4 : 0.6,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
       },
     },
     exit: {
       opacity: 0,
       transition: {
-        duration: 0.3,
+        duration: shouldReduceMotion ? 0.1 : 0.3,
       },
     },
   };
 
   const sectionVariants = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: shouldReduceMotion ? 0 : isMobile ? 10 : 20 },
     animate: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: shouldReduceMotion ? 0.1 : isMobile ? 0.5 : 0.8,
         ease: [0.25, 0.46, 0.45, 0.94] as const,
       },
     },

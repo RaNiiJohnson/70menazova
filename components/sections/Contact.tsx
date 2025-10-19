@@ -180,9 +180,10 @@ export default function Contact() {
                       <Button
                         variant="outline"
                         onClick={() => window.open(url, "_blank")}
-                        className={`w-full justify-start gap-3 h-12 border-border/50 transition-all duration-300 ${getSocialColor(
+                        className={`w-full justify-start gap-3 h-14 border-border/50 transition-all duration-300 touch-manipulation min-h-[48px] ${getSocialColor(
                           platform
                         )}`}
+                        aria-label={`Suivre sur ${platform}`}
                       >
                         {getSocialIcon(platform)}
                         <span className="capitalize font-medium">
@@ -216,7 +217,7 @@ export default function Contact() {
                         "_blank"
                       )
                     }
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                    className="w-full bg-primary hover:bg-primary/90 active:bg-primary/80 text-primary-foreground min-h-[48px] touch-manipulation"
                   >
                     <Mail className="w-4 h-4 mr-2" />
                     Nous Contacter

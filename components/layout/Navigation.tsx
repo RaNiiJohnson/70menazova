@@ -144,15 +144,20 @@ export function Navigation({ activeSection }: NavigationProps) {
         <div className="md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative min-h-[44px] min-w-[44px] touch-manipulation"
+                aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              >
                 <motion.div
                   animate={{ rotate: isOpen ? 90 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
                   {isOpen ? (
-                    <X className="h-5 w-5" />
+                    <X className="h-6 w-6" />
                   ) : (
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-6 w-6" />
                   )}
                 </motion.div>
               </Button>
@@ -171,11 +176,12 @@ export function Navigation({ activeSection }: NavigationProps) {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(item.id)}
-                    className={`text-left px-4 py-3 rounded-md text-base font-medium transition-all duration-200 ${
+                    className={`text-left px-4 py-4 rounded-md text-lg font-medium transition-all duration-200 min-h-[56px] touch-manipulation w-full ${
                       currentSection === item.id
-                        ? "text-primary bg-primary/10 border-l-2 border-primary"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                        ? "text-primary bg-primary/10 border-l-4 border-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent active:bg-accent/80"
                     }`}
+                    aria-label={`Aller à la section ${item.label}`}
                   >
                     {item.label}
                   </motion.button>
